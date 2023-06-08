@@ -34,7 +34,6 @@ const SearchPage = () => {
       );
       const data = await response.json();
       const locationName = data.results[0]?.formatted_address;
-      console.log(locationName)
       setClientLocationName(locationName || 'Unknown');
     } catch (error) {
       console.error('Error fetching location name:', error);
