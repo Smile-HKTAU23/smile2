@@ -8,6 +8,10 @@ api.config['SECRET_KEY'] = 'secret_key'
 db = SmileDB(DB_FILENAME)
 socketio = SocketIO(api, cors_allowed_origins="*")
 
+# Demo
+DEMO_DRIVER_LOCATIONS = [{'lat': 0, 'lon': 0}]
+DEMO_COUNTER = 0
+DEMO_MODE = False
 
 def logic_get_options(passenger_source: Location,
                       passenger_destination: Location,
@@ -32,10 +36,18 @@ def get_options():
     print(options)
     return options
 
+
 @socketio.on('message')
 def handle_message(message):
-    print('Received:', message)
-    socketio.emit('response', message)
+    print('Received:', message)  
+    if DEMO_MODE:
+        DEMO_COUNTER += 1
+        location = DRIVER_LOCATIONS[DEMO_COUNTER % len(DEMO_DRIVER_LOCATIONS)]
+    else:
+        # Get driver location and return it.
+        raise NotImplementedError()
+
+    socketio.emit('response', {"driver_location": location})
 
 if __name__ == "__main__":
     socketio.run(api, debug=True)

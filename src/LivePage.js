@@ -10,7 +10,7 @@ const LivePage = () => {
 
     // Send the "hello" message every minute
     const interval = setInterval(() => {
-      socketRef.current.emit('message', 'hello');
+      socketRef.current.emit('message', {'hello':'1'});
     }, 600000);
 
     socketRef.current.on('response', (data) => {
