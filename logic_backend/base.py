@@ -82,8 +82,6 @@ def get_driver_route(src_address,dst_address):
 def unite_coor(lat,lon):
     return lat,lon
 
-
-
 def get_drivers_near_coordinate(drivers_route_dict,coor,radius=RADIUS):
     filtered_dict = {}
     min_distance_dict = {}
@@ -124,6 +122,33 @@ def get_options(details):
     return [{'id': '111111', 'pickup': {'lat': 0, 'lon': 0}, 'dropoff': {'lat': 0, 'lon': 0} }, 
             {'id': '222222', 'pickup': {'lat': 0, 'lon': 0}, 'dropoff': {'lat': 0, 'lon': 0} }]
 
+def dummy_get_near_dest(drivers_route_dict,coor):
+    filtered_dict = {}
+    min_distance_dict = {}
+    for driver_id, coordinates in drivers_route_dict.items():
+        min_distance = float('inf')
+        nearest_coordinate = None
+        for coordinate in coordinates:
+            distance = get_distance(coordinate, coor)
+            if distance < min_distance:
+                min_distance = distance
+                nearest_coordinate = coordinate
+        if nearest_coordinate is not None:
+            filtered_dict[driver_id] = coordinates
+            min_distance_dict[driver_id] = nearest_coordinate
+    return min_distance_dict
+
+def dummy_finder(drivers_route_dict,src_coor,dst_coor,radius=RADIUS):
+    drivers_near_src, pickup_dict = get_drivers_near_coordinate(drivers_route_dict, src_coor, radius)
+    print(len(drivers_route_dict),src_coor,radius)
+    drivers_dropoff = dummy_get_near_dest(drivers_route_dict, dst_coor)
+    matching_drivers = sorted(drivers_dropoff.items(), key=lambda item: get_distance(item[1], dst_coor))
+    maximum = min(3, len(matching_drivers))
+    return [{'id': matching_drivers[i][0],
+             'pickup': {'lat': pickup_dict[matching_drivers[i][0]][0], 'lon': pickup_dict[matching_drivers[i][0]][1]},
+             'dropoff': {'lat': matching_drivers[i][1][0],
+                         'lon': matching_drivers[i][1][1]}} for i in range(maximum)]
+
 def test1(coordinates):
 
 
@@ -133,6 +158,7 @@ def test1(coordinates):
 
     # Create a map object
     m = folium.Map(location=map_center, zoom_start=zoom_level)
+
 
     def add_coordinates_to_map(coordinates):
         # Add markers for each coordinate
@@ -145,35 +171,39 @@ def test1(coordinates):
     # Save the map to an HTML file
     m.save('map.html')
 
+def parse_details(details):
+    src_coor = unite_coor(details['passenger']['source']['lat'], details['passenger']['source']['lon'])
+    dst_coor = unite_coor(details['passenger']['destination']['lat'], details['passenger']['destination']['lon'])
+    drivers = {
+        details['courses'][i]['id']: get_driver_route(
+            details['courses'][i]['source']['name'],
+            details['courses'][i]['destination']['name']
+        )
+        for i in range(len(details['courses']))
+    }
+    return src_coor, dst_coor, drivers
+
 def main():
     details = {
     'passenger':
-        {'source': {'lat': 0, 'lon': 0},
-        'destination': {'lat': 0, 'lon': 0}},
+        {'source': {'lat': 32.069235, 'lon': 34.825947, 'name': "Sholmzion Ramat Gan"},
+        'destination': {'lat': 32.113169, 'lon': 34.804345, 'name': "Tel Aviv University"}},
     'courses':
         [
             {'id': '111111',
-            'source': {'lat': 0, 'lon': 0},
-            'destination': {'lat': 0, 'lon': 0}},
+            'source': {'lat': 32.069235, 'lon': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+            'destination': {'lat': 0, 'lon': 0, 'name': "Rokach Boulevard, Tel Aviv-Yafo"}},
             {'id': '222222',
-            'source': {'lat': 0, 'lon': 0},
-            'destination': {'lat': 0, 'lon': 0}},
+            'source': {'lat': 0, 'lon': 0, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+            'destination': {'lat': 0, 'lon': 0, 'name': "Tagore St 55 Tel Aviv"}},
         ],
         # 'points_of_interest': [{'lat': 0, 'lon': 0}, {'lat': 0, 'lon': 0}, {'lat': 0, 'lon': 0}]
 
     }
-    #-----not relevant:
-    source_location = 'Shlomzion Ramat Gan'
-    destination_location = 'Tel Aviv University'
-
-    route_coordinates = get_route_coordinates(source_location, destination_location)
-    test1(route_coordinates)
-
-    # Print the coordinates
-    print(route_coordinates)
+    src_coor,dst_coor,drivers_rout_dict = parse_details(details)
     #-------
 
-    result = get_options(details)
+    result = dummy_finder(drivers_rout_dict,src_coor,dst_coor)# get_options(details)
     print(result)
     
 
