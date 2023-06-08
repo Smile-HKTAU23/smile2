@@ -1,9 +1,12 @@
 from flask import Flask, request
+from flask_socketio import SocketIO
 
 from db import SmileDB, DB_FILENAME, Location
 
 api = Flask(__name__)
+api.config['SECRET_KEY'] = 'secret_key'
 db = SmileDB(DB_FILENAME)
+socketio = SocketIO(api, cors_allowed_origins="*")
 
 
 def logic_get_options(passenger_source: Location,
@@ -29,6 +32,10 @@ def get_options():
     print(options)
     return options
 
+@socketio.on('message')
+def handle_message(message):
+    print('Received:', message)
+    socketio.emit('response', message)
 
 if __name__ == "__main__":
-    api.run()
+    socketio.run(api, debug=True)
