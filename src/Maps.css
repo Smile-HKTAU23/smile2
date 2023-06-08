@@ -1,0 +1,36 @@
+.card-swiper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
+  
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 60rem;
+    height: 40rem;
+    border-radius: 1rem;
+  }
+  
+  .swipe-button {
+    background-color: #e0e0e0;
+    border: none;
+    color: #333;
+    font-size: 3rem;
+    padding: 10rem 30px;
+    border-radius: 1rem;
+    cursor: pointer;
+  }
+  
+  .left {
+    margin-right: 10px;
+  }
+  
+  .right {
+    margin-left: 10px;
+  }
+  
