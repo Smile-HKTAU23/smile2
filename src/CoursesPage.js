@@ -1,11 +1,14 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import CardSwiper from './Maps.js';
+import MapComponent from './MapComponent'
 
 const CoursesPage = () => {
   const location = useLocation();
   console.log(location.state)
-  let cards = location.state.map((loc) => {
+  const options = location.state.options;
+  const pos = location.state.pos;
+  let cards = options.map((loc) => {
     return {
       id:loc.id,
       lat:loc.pickup.lat,
@@ -19,7 +22,7 @@ const CoursesPage = () => {
     <div>
       <h2>Results Page</h2>
       <p>Destination: </p>
-      <CardSwiper cards={cards} locations={location.state}/>
+      <CardSwiper cards={cards} locations={options} pos={pos}/>
     </div>
   );
 };

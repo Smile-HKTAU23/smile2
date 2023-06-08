@@ -10,7 +10,7 @@ def logic_get_options(passenger_source: Location,
                       passenger_destination: Location,
                       courses):
     print("logic_get_options() is a mock - returning first courses...")
-    result = [{"id": c.id, 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat':  34.0461, 'lng':  33.0461}}
+    result = [{"id": c.id, 'pickup': {'lat': 31.0461, 'lng': 31.8516}, 'dropoff': {'lat':  31.0461, 'lng':  31.0461}}
               for c in courses]
     return result
 
@@ -18,16 +18,18 @@ def logic_get_options(passenger_source: Location,
 @api.route('/get_options')
 def get_options():
     courses = db.get_courses()
-    source = Location(lat=request.args.get("source_lat"),
-                      lng=request.args.get("source_lng"))
-    destination = Location(lat=request.args.get("dest_lat"),
-                      lng=request.args.get("dest_lng"))
+    source = Location(lat=float(request.args.get("source_lat")),
+                      lng=float(request.args.get("source_lng")))
+    destination = Location(lat=float(request.args.get("dest_lat")),
+                      lng=float(request.args.get("dest_lng")))
 
     options = logic_get_options(passenger_source=source,
                                 passenger_destination=destination,
                                 courses=courses)
     print(options)
-    return options
+    pos = {'lat': float(request.args.get("source_lat")), 'lng':float(request.args.get("source_lng"))}
+    print(pos)
+    return {'options': options, 'pos': pos}
 
 
 if __name__ == "__main__":

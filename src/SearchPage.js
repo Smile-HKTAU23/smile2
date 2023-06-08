@@ -23,7 +23,7 @@ const SearchPage = () => {
   }, []);
 
   const handleSearch = () => {
-    const url = `/get_options?dest_lat=${destination.latitude}&dest_lon=${destination.longitude}&source_lat=${clientLocation.latitude}&source_lon=${clientLocation.longitude}`;
+    const url = `/get_options?dest_lat=${destination.latitude}&dest_lng=${destination.longitude}&source_lat=${clientLocation.latitude}&source_lng=${clientLocation.longitude}`;
         
     fetch(url, {
       method: 'GET',

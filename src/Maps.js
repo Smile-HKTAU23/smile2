@@ -1,125 +1,107 @@
 import React, { useEffect, useState } from 'react';
 import './Maps.css'
-import { DirectionsRenderer, Marker, GoogleMap, LoadScript } from '@react-google-maps/api';
+import { DirectionsRenderer, Marker, GoogleMap, DirectionsService } from '@react-google-maps/api';
 
-
-
-const containerStyle = {
-  width: '100%',
-  height: '400px'
-};
-
-const options = {
-  disableDefaultUI: true
-}
-
-const setCurrenRoute = (location) => {
-  const locations = [[32.068270000000005, 34.82477], [32.068020000000004, 34.82719], [32.067330000000005, 34.827070000000006], [32.0672, 34.82701], [32.067080000000004, 34.8269], [32.06702, 34.82679], [32.067, 34.8267], [32.066990000000004, 34.826550000000005], [32.06705, 34.826130000000006], [32.067190000000004, 34.8249], [32.067260000000005, 34.82414], [32.0668, 34.82406], [32.06663, 34.82403], [32.06637, 34.823980000000006], [32.065020000000004, 34.82374], [32.06449, 34.823620000000005], [32.06405, 34.823550000000004], [32.06335, 34.82343], [32.06316, 34.823370000000004], [32.06297, 34.82321], [32.0626, 34.822900000000004], [32.06232, 34.82251], [32.062110000000004, 34.822210000000005], [32.06197, 34.82195], [32.06166, 34.821250000000006], [32.06147, 34.82079], [32.06157, 34.82052], [32.0619, 34.820260000000005], [32.062490000000004, 34.81976], [32.06266, 34.819590000000005], [32.06299, 34.819210000000005], [32.06335, 34.81873], [32.06358, 34.81841], [32.063860000000005, 34.817930000000004], [32.063970000000005, 34.8177], [32.064170000000004, 34.817260000000005], [32.06468, 34.81575], [32.06487, 34.81508], [32.06513, 34.81398], [32.06532, 34.81286], [32.065470000000005, 34.81224], [32.06559, 34.811890000000005], [32.065870000000004, 34.81114], [32.066320000000005, 34.81006], [32.06646, 34.80955], [32.066520000000004, 34.80926], [32.06654, 34.80897], [32.06656, 34.80852], [32.0664, 34.80646], [32.066230000000004, 34.80415], [32.06617, 34.80346], [32.06616, 34.80319], [32.06618, 34.803050000000006], [32.06624, 34.80293], [32.06631, 34.80285], [32.06642, 34.802820000000004], [32.066990000000004, 34.80277], [32.067510000000006, 34.80272], [32.06866, 34.80266], [32.06927, 34.802600000000005], [32.06954, 34.802550000000004], [32.06976, 34.802440000000004], [32.06998, 34.80221], [32.07014, 34.802020000000006], [32.0702, 34.80191], [32.07031, 34.801610000000004], [32.070690000000006, 34.8005], [32.07085, 34.799980000000005], [32.07164, 34.797380000000004], [32.072, 34.796220000000005], [32.07246, 34.794760000000004], [32.07258, 34.794430000000006], [32.07265, 34.79421], [32.07278, 34.794140000000006], [32.07302, 34.79399], [32.07385, 34.793910000000004], [32.0741, 34.79392], [32.074470000000005, 34.793940000000006], [32.07481, 34.79399], [32.07526, 34.79411], [32.075320000000005, 34.7941], [32.075450000000004, 34.79406], [32.07625, 34.794520000000006], [32.07667, 34.794810000000005], [32.07687, 34.79495], [32.077020000000005, 34.79506], [32.077580000000005, 34.7956], [32.07813, 34.79614], [32.07869, 34.79668], [32.07896, 34.79695], [32.07938, 34.79728], [32.079800000000006, 34.79758], [32.08008, 34.797740000000005], [32.08064, 34.798], [32.08119, 34.79816], [32.083330000000004, 34.798700000000004], [32.08496, 34.79921], [32.085100000000004, 34.79927], [32.087320000000005, 34.80015], [32.08773, 34.800290000000004], [32.08901, 34.80064], [32.089940000000006, 34.800900000000006], [32.091840000000005, 34.801390000000005], [32.09272, 34.801590000000004], [32.09405, 34.801840000000006], [32.095110000000005, 34.80205], [32.095150000000004, 34.80209], [32.09523, 34.80214], [32.09526, 34.80216], [32.09568, 34.802260000000004], [32.099050000000005, 34.802960000000006], [32.09933, 34.803020000000004], [32.09951, 34.803140000000006], [32.09967, 34.80319], [32.100010000000005, 34.803270000000005], [32.100120000000004, 34.80331], [32.1006, 34.803580000000004], [32.100750000000005, 34.80375], [32.1009, 34.804], [32.100970000000004, 34.804170000000006], [32.10112, 34.804730000000006], [32.10116, 34.804840000000006], [32.10127, 34.805], [32.10139, 34.805110000000006], [32.1017, 34.805200000000006], [32.10184, 34.805130000000005], [32.101940000000006, 34.80512], [32.1023, 34.80507], [32.10242, 34.80505], [32.10239, 34.804930000000006], [32.1024, 34.804660000000005], [32.102320000000006, 34.804280000000006], [32.10228, 34.80409], [32.10224, 34.803900000000006], [32.10206, 34.80321], [32.10202, 34.80303], [32.10199, 34.80292], [32.10202, 34.80283], [32.1021, 34.802620000000005], [32.10217, 34.802530000000004], [32.102230000000006, 34.80247], [32.102320000000006, 34.80243], [32.1025, 34.80243], [32.10275, 34.80248], [32.102990000000005, 34.802670000000006], [32.10323, 34.802910000000004], [32.10356, 34.80328], [32.10381, 34.803470000000004], [32.103910000000006, 34.803520000000006], [32.10419, 34.80355], [32.10456, 34.80348], [32.10468, 34.803490000000004], [32.104890000000005, 34.80355], [32.105070000000005, 34.803650000000005], [32.10517, 34.80375], [32.105630000000005, 34.80431], [32.10577, 34.80447], [32.106230000000004, 34.80463], [32.10631, 34.804700000000004], [32.106550000000006, 34.80483], [32.1068, 34.80509], [32.10712, 34.805440000000004], [32.1075, 34.80579], [32.107690000000005, 34.80592], [32.108180000000004, 34.80626], [32.10864, 34.806560000000005], [32.109210000000004, 34.80686], [32.109590000000004, 34.80704], [32.109840000000005, 34.807140000000004], [32.1101, 34.807210000000005], [32.110420000000005, 34.80724], [32.11041, 34.80727], [32.110420000000005, 34.80731], [32.110440000000004, 34.80738], [32.11048, 34.807430000000004], [32.11054, 34.80745], [32.11059, 34.80744], [32.11066, 34.807370000000006], [32.11068, 34.807300000000005], [32.110670000000006, 34.807230000000004], [32.110640000000004, 34.80716], [32.11059, 34.807120000000005]]
-  const jumpSize = Math.ceil(locations.length / 25);
-  const cutLocations = [];
-
-  for (let i = 0; i < locations.length; i += jumpSize) {
-    cutLocations.push(locations[i]);
-  }
-  const waypoints = cutLocations.map((location) => ({
-    location: new window.google.maps.LatLng(location[0], location[1]),
-    stopover: true,
-  }));
-
-
-  const directionsService = new window.google.maps.DirectionsService();
-  directionsService.route(
-    {
-      origin: new window.google.maps.LatLng(locations[0][0], locations[0][1]),
-      destination: new window.google.maps.LatLng(locations[locations.length - 1][0], locations[locations.length - 1][1]),
-      waypoints: waypoints,
-      optimizeWaypoints: true,
-      travelMode: 'DRIVING',
-    },
-    (response, status) => {
-      if (status === 'OK') {
-        return response
-      } else {
-        console.log('Directions request failed due to ' + status);
-      }
-    }
-  );
-
-}
-
-const getCurrentMarkers = () => {
-  console.log("marker")
-  const markerData = [
-    { lat: 33.0461, lng: 34.8516 },
-    { lat: 32.987, lng: 34.770 },
-    { lat: 32.954, lng: 35.098 },
-    // Add more marker data as needed
-  ];
-
-  // Create an array of <Marker> components based on the marker data
-  const markers = markerData.map((marker, index) => (
-    <Marker
-      key={`marker_${index}`} // Unique key for each marker
-      position={{
-        lat: marker.lat,
-        lng: marker.lng,
-      }}
-    />
-  ));
-
-  return markers;
-
-}
-
-const renderMap = (card) => {
-  // Render the Google Maps component using the card's location information
-  // Replace the following code with your own implementation using the Google Maps API
-  console.log("here")
-
-  console.log(card)
-
-  return (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={{ lat: card.lat, lng: card.lng }}
-        zoom={10}
-        options={options}
-      >
-      </GoogleMap>
-  )
-};
-
-
-
-
-const CardSwiper = ({ cards, locations }) => {
+const CardSwiper = ({ cards, locations, pos }) => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [currentMap, setCurrentMap] = useState(0);
+    const [directions, setDirections] = useState(null);
     const [a, seta] = useState(0);
+    
+    
+const containerStyle = {
+    width: '100%',
+    height: '400px'
+  };
   
+  const options = {
+    disableDefaultUI: true
+  }
+  
+  // Define your origin and destination
+  const origin = { lat: 31.7749, lng: 31.4194 };
+  const destination = { lat: 31.0522, lng: 31.2437 };
+  const pickup1 = {lng: 34.82343,  lat: 32.06335}
+  const dropoff1 =  {lng: 34.82343, lat: 32.06345}
+
+  const handleDirectionsService = (directionsService) => {
+    if (directions == null)
+      {
+        console.log(directionsService)
+        setDirections(directionsService)  
+      }            
+  };
+  
+  const getCurrentMarkers = () => {
+    console.log("marker")
+    const markerData = [
+      pos,
+      // Add more marker data as needed
+    ];
+  
+    // Create an array of <Marker> components based on the marker data
+    const markers = markerData.map((marker, index) => (
+      <Marker
+        key={`marker_${index}`} // Unique key for each marker
+        position={{
+          lat: marker.lat,
+          lng: marker.lng,
+        }}
+      />
+    ));
+  
+    return markers;
+  
+  }
+  
+  const renderMap = (card) => {
+      
+    // Render the Google Maps component using the card's location information
+    // Replace the following code with your own implementation using the Google Maps API
+    console.log("here")
+  
+    console.log(card)
+    return (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={card.pickup}
+          zoom={8}
+          options={options}
+        >
+          
+        {directions && <DirectionsRenderer directions={directions} />}
+
+        <DirectionsService options={{
+            destination: card.dropoff,
+            origin: card.pickup,
+            travelMode: 'DRIVING',
+          }} callback={handleDirectionsService} />
+        {getCurrentMarkers()}
+          
+        </GoogleMap>
+    )
+  };
+  
+
     const handleSwipeLeft = () => {
       setCurrentCardIndex((prevIndex) => (prevIndex === 0 ? cards.length - 1 : prevIndex - 1));
+      setCurrentMap(renderMap(locations[currentCardIndex]));
     };
   
     const handleSwipeRight = () => {
       setCurrentCardIndex((prevIndex) => (prevIndex === cards.length - 1 ? 0 : prevIndex + 1));
+      setCurrentMap(renderMap(locations[currentCardIndex]));
     };
   
   
-    console.log("locations")
-    console.log(locations)
-    console.log("cards" )
-    console.log(cards)
-  
-    
     useEffect(() => {
         if (currentMap == 0 ) {
 
         const currentMap1 = renderMap({
             id: 1,
             location: 'Israel',
-            lat: 33.0461, // initial latitude
-            lng: 34.8516 // initial longitude;
+            pickup: pickup1,
+            dropoff: dropoff1,
           });
         setCurrentMap(currentMap1);
     }
