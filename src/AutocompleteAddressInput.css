@@ -1,0 +1,24 @@
+.address-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .autocomplete-dropdown-container {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d4d4d4;
+    width: 300px;
+    margin-top: 10px;
+    z-index: 1000;
+  }
+  
+  .suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .suggestion-item--active {
+    background-color: #e6e6e6;
+  }
+  

@@ -1,0 +1,5 @@
+{"courses":
+  [
+    {"id": "111111", "source": {"lat": 0, "lon": 0}, "destination": {"lat": 0, "lon": 0}},
+    {"id": "222222", "source": {"lat": 0, "lon": 0}, "destination": {"lat": 0, "lon": 0}}
+  ]}

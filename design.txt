@@ -1,0 +1,52 @@
+Backend API:
+	GET /search_course
+			{user_id, source, destination}	
+
+		Imp:
+			# p = db.create_passenger()
+			ds = db.get_course()
+			options = logic.get_options(p, courses)	
+			# TODO: Add time to reach destination, time of driver to reach pickup
+			distance_to_pickup = Calculate()		
+			return matches[:3]
+
+
+	POST /choose_course
+		{driver_id}
+
+		Imp:
+			client = socket.receive()
+			while True:
+				time.sleep(60)
+				passenger_location = client.receive()
+				client.send(db.get_coures(course)
+
+
+		live session (socket):
+			-> every minute: send passenger location, get driver location
+			-> event: reached car (automatically)
+			-> event: reached destination - finishes session
+	
+	/get_course_summary 
+
+
+Logic Backend API:
+	GET /get_options
+			{{passenger_source, passenger_destination}, [{course_id, source, destination}], [points_of_interest]}
+
+		Imp:
+			points_of_interest = db.points_of_interest()
+			options.sort(k=option.priorty)			
+
+			response:
+				[{driver_id, pickup_location, drop_location}]
+	
+DB:
+	Users:
+		{user_id, name}
+
+	Courses:
+		user_id, source, destination, drive_location, current_passengers_amount, max_passengers_amount
+
+	#Passengers:
+	#	user_id, source, destination

@@ -1,0 +1,32 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: grey;
+  padding: 20px;
+}
+
+.App-title {
+  font-size: 32px;
+  color: orange;
+}
+
+.App-content {
+  padding: 20px;
+}
+
+.search-button {
+  background-color: orange;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.App-footer {
+  background-color: grey;
+  padding: 20px;
+  color: white;
+}
