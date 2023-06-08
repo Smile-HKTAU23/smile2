@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import './AutocompleteAddressInput.css';
 
-const AutocompleteAddressInput = ({ onSelect }) => {
+const AutocompleteAddressInput = ({ onSelect , onChange}) => {
   const [address, setAddress] = useState('');
   const [coordinates, setCoordinates] = useState({ latitude: null, longitude: null });
 
   const handleChange = (newAddress) => {
     setAddress(newAddress);
+    onChange(newAddress);
   };
 
   const handleSelect = (location) => {

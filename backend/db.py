@@ -10,6 +10,12 @@ class Location:
     lng: float
 
 @dataclass
+class LocationWithName:
+    lat: float
+    lng: float
+    name: str
+
+@dataclass
 class User:
     id: str
     name: str
@@ -19,8 +25,9 @@ class User:
 @dataclass()
 class Course:
     id: str
-    source: Location
-    destination: Location
+    current_location: Location
+    source: LocationWithName
+    destination: LocationWithName
 
 @dataclass
 class SmileDB:

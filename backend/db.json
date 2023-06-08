@@ -1,5 +1,11 @@
 {"courses":
   [
-    {"id": "111111", "source": {"lat": 0, "lon": 0}, "destination": {"lat": 0, "lon": 0}},
-    {"id": "222222", "source": {"lat": 0, "lon": 0}, "destination": {"lat": 0, "lon": 0}}
+    {"id": "111111",
+      "current_location": {"lat": 0, "lon": 0},
+      "source": {"lat": 0, "lon": 0, "name": "a"},
+      "destination": {"lat": 0, "lon": 0, "name": "a"}},
+    {"id": "222222",
+      "current_location": {"lat": 0, "lon": 0},
+      "source": {"lat": 0, "lon": 0, "name": "a"},
+      "destination": {"lat": 0, "lon": 0, "name": "a"}}
   ]}
