@@ -14,23 +14,23 @@ def api_get_options():
 def get_options(details):
 
 
-    return [{'id': '111111', 'pickup': {'lat': 0, 'lon': 0}, 'dropoff': {'lat': 0, 'lon': 0} }, 
-            {'id': '222222', 'pickup': {'lat': 0, 'lon': 0}, 'dropoff': {'lat': 0, 'lon': 0} }]
+    return [{'id': '111111', 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat': 34.0461, 'lng': 34.8516} }, 
+            {'id': '222222', 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat': 35.0461, 'lng': 34.8516} }]
 
 
 def main():
     details = {
     'passenger':
-        {'source': {'lat': 0, 'lon': 0},
-        'destination': {'lat': 0, 'lon': 0}},
+        {'source': {'lat': 33.0461, 'lng': 34.8516},
+        'destination': {'lat': 34.0461, 'lng': 34.8516}},
     'courses':
         [
             {'id': '111111',
-            'source': {'lat': 0, 'lon': 0},
-            'destination': {'lat': 0, 'lon': 0}},
+            'source': {'lat': 33.0461, 'lng': 34.8516},
+            'destination': {'lat': 34.0461, 'lng': 34.8516}},
             {'id': '222222',
-            'source': {'lat': 0, 'lon': 0},
-            'destination': {'lat': 0, 'lon': 0}},
+            'source': {'lat': 33.0461, 'lng': 34.8516},
+            'destination': {'lat': 34.0461, 'lng': 34.8516}},
         ],
         # 'points_of_interest': [{'lat': 0, 'lon': 0}, {'lat': 0, 'lon': 0}, {'lat': 0, 'lon': 0}]
     }

@@ -7,7 +7,7 @@ DB_FILENAME = "db.json"
 @dataclass
 class Location:
     lat: float
-    lon: float
+    lng: float
 
 @dataclass
 class User:

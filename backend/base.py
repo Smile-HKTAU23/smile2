@@ -10,7 +10,7 @@ def logic_get_options(passenger_source: Location,
                       passenger_destination: Location,
                       courses):
     print("logic_get_options() is a mock - returning first courses...")
-    result = [{"id": c.id, 'pickup': {'lat': 0, 'lon': 0}, 'dropoff': {'lat': 0, 'lon': 0}}
+    result = [{"id": c.id, 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat':  34.0461, 'lng':  33.0461}}
               for c in courses]
     return result
 
@@ -19,9 +19,9 @@ def logic_get_options(passenger_source: Location,
 def get_options():
     courses = db.get_courses()
     source = Location(lat=request.args.get("source_lat"),
-                      lon=request.args.get("source_lon"))
+                      lng=request.args.get("source_lng"))
     destination = Location(lat=request.args.get("dest_lat"),
-                      lon=request.args.get("dest_lon"))
+                      lng=request.args.get("dest_lng"))
 
     options = logic_get_options(passenger_source=source,
                                 passenger_destination=destination,
