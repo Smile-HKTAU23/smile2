@@ -1,12 +1,18 @@
 from flask import Flask, request
+from flask_socketio import SocketIO
 
 from logic import dummy_finder, parse_details
 from db import SmileDB, DB_FILENAME, Location, LocationWithName
 
 api = Flask(__name__)
+api.config['SECRET_KEY'] = 'secret_key'
 db = SmileDB(DB_FILENAME)
+socketio = SocketIO(api, cors_allowed_origins="*")
 
+# Demo
 DEMO_MODE = True
+DEMO_DRIVER_LOCATIONS = [{'lat': 0, 'lon': 0}]
+DEMO_COUNTER = 0
 
 
 def logic_get_options(details):
@@ -39,5 +45,17 @@ def get_options():
     return result
 
 
+@socketio.on('message')
+def handle_message(message):
+    print('Received:', message)
+    if DEMO_MODE:
+        DEMO_COUNTER += 1
+        location = DEMO_DRIVER_LOCATIONS[DEMO_COUNTER % len(DEMO_DRIVER_LOCATIONS)]
+    else:
+        # Get driver location and return it.
+        raise NotImplementedError()
+
+    socketio.emit('response', {"driver_location": location})
+
 if __name__ == "__main__":
-    api.run(debug=True)
+    socketio.run(api, debug=True)
