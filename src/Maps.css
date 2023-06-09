@@ -14,23 +14,56 @@
     width: 60rem;
     height: 40rem;
     border-radius: 1rem;
+    position: relative;
   }
   
   .swipe-button {
-    background-color: #e0e0e0;
+    background-color: hsl(0, 0%, 88%, 0.2);
     border: none;
     color: #333;
     font-size: 3rem;
-    padding: 10rem 30px;
     border-radius: 1rem;
     cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1
   }
-  
+  .down-button-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  .next-page {
+    background-color: #111111;
+    border: none;
+    color: #f5ebeb;
+    font-size: 2rem;
+    padding: 10px 10px;
+    border-radius: 1rem;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .left {
     margin-right: 10px;
+    margin-top: 15px;
+    padding: 18rem 10px;
   }
   
   .right {
-    margin-left: 10px;
+    margin-left: 20rem;
+
+    margin-top: 15px;
+    padding: 18rem 10px;
+  }
+  
+  .down {
+    margin-bottom: 10px;
+    margin-left: 32%;
   }
   
