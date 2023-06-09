@@ -1,7 +1,6 @@
 from dataclasses import dataclass, asdict
 import json
 
-
 DB_FILENAME = "db.json"
 
 @dataclass
@@ -39,10 +38,6 @@ class SmileDB:
             data = json.loads(content)
             return data[section_name]
 
-    # def get_users(self):
-    #     return self.get_section("users")
-
     def get_courses(self):
         courses_data = self.get_section("courses")
-        courses = [Course(**d) for d in courses_data]
-        return courses
+        return courses_data

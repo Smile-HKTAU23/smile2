@@ -108,7 +108,7 @@ def get_rides(drivers_route_dict,src_coor,dst_coor,radius=RADIUS):
     drivers_near_src,pickup_dict = get_drivers_near_coordinate(drivers_route_dict,src_coor,radius)
     matching_drivers,dropoff_dict = get_drivers_near_dst(drivers_route_dict,dst_coor,radius)
     maximum = min(3,len(matching_drivers))
-    return [{'id':matching_drivers[i][0],'pickup':{'lat':pickup_dict[matching_drivers[i][0]][0],'lon':pickup_dict[matching_drivers[i][0]][1]},'dropoff':{'lat':dropoff_dict[matching_drivers[i][0]][0],'lon':dropoff_dict[matching_drivers[i][0]][1]}} for i in range(maximum)]
+    return [{'id':matching_drivers[i][0],'pickup':{'lat':pickup_dict[matching_drivers[i][0]][0],'lng':pickup_dict[matching_drivers[i][0]][1]},'dropoff':{'lat':dropoff_dict[matching_drivers[i][0]][0],'lng':dropoff_dict[matching_drivers[i][0]][1]}} for i in range(maximum)]
     #return 0-3 best rides
 
 def api_get_options():
@@ -117,7 +117,7 @@ def api_get_options():
 
 def get_options(details):
     #return 0-3 options for rides
-    #return object = {'id': '111111', 'pickup': {'lat': 0, 'lon': 0}, 'dropoff': {'lat': 0, 'lon': 0} }
+    #return object = {'id': '111111', 'pickup': {'lat': 0, 'lng': 0}, 'dropoff': {'lat': 0, 'lng': 0} }
 
     return [{'id': '111111', 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat': 34.0461, 'lng': 34.8516} }, 
             {'id': '222222', 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat': 35.0461, 'lng': 34.8516} }]
@@ -145,9 +145,9 @@ def dummy_finder(drivers_route_dict,src_coor,dst_coor,radius=RADIUS):
     matching_drivers = sorted(drivers_dropoff.items(), key=lambda item: get_distance(item[1], dst_coor))
     maximum = min(3, len(matching_drivers))
     return [{'id': matching_drivers[i][0],
-             'pickup': {'lat': pickup_dict[matching_drivers[i][0]][0], 'lon': pickup_dict[matching_drivers[i][0]][1]},
+             'pickup': {'lat': pickup_dict[matching_drivers[i][0]][0], 'lng': pickup_dict[matching_drivers[i][0]][1]},
              'dropoff': {'lat': matching_drivers[i][1][0],
-                         'lon': matching_drivers[i][1][1]}} for i in range(maximum)]
+                         'lng': matching_drivers[i][1][1]}} for i in range(maximum)]
 
 def test1(coordinates):
 
@@ -172,8 +172,8 @@ def test1(coordinates):
     m.save('map.html')
 
 def parse_details(details):
-    src_coor = unite_coor(details['passenger']['source']['lat'], details['passenger']['source']['lon'])
-    dst_coor = unite_coor(details['passenger']['destination']['lat'], details['passenger']['destination']['lon'])
+    src_coor = unite_coor(details['passenger']['source']['lat'], details['passenger']['source']['lng'])
+    dst_coor = unite_coor(details['passenger']['destination']['lat'], details['passenger']['destination']['lng'])
     drivers = {
         details['courses'][i]['id']: get_driver_route(
             details['courses'][i]['source']['name'],
@@ -186,18 +186,18 @@ def parse_details(details):
 def main():
     details = {
     'passenger':
-        {'source': {'lat': 32.069235, 'lon': 34.825947, 'name': "Sholmzion Ramat Gan"},
-        'destination': {'lat': 32.113169, 'lon': 34.804345, 'name': "Tel Aviv University"}},
+        {'source': {'lat': 32.069235, 'lng': 34.825947, 'name': "Sholmzion Ramat Gan"},
+        'destination': {'lat': 32.113169, 'lng': 34.804345, 'name': "Tel Aviv University"}},
     'courses':
         [
             {'id': '111111',
-            'source': {'lat': 32.069235, 'lon': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
-            'destination': {'lat': 0, 'lon': 0, 'name': "Rokach Boulevard, Tel Aviv-Yafo"}},
+            'source': {'lat': 32.069235, 'lng': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+            'destination': {'lat': 0, 'lng': 0, 'name': "Rokach Boulevard, Tel Aviv-Yafo"}},
             {'id': '222222',
-            'source': {'lat': 0, 'lon': 0, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
-            'destination': {'lat': 0, 'lon': 0, 'name': "Tagore St 55 Tel Aviv"}},
+            'source': {'lat': 0, 'lng': 0, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+            'destination': {'lat': 0, 'lng': 0, 'name': "Tagore St 55 Tel Aviv"}},
         ],
-        # 'points_of_interest': [{'lat': 0, 'lon': 0}, {'lat': 0, 'lon': 0}, {'lat': 0, 'lon': 0}]
+        # 'points_of_interest': [{'lat': 0, 'lng': 0}, {'lat': 0, 'lng': 0}, {'lat': 0, 'lng': 0}]
 
     }
     src_coor,dst_coor,drivers_rout_dict = parse_details(details)

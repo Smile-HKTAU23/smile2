@@ -42,7 +42,7 @@ const SearchPage = () => {
 
 
   const handleSearch = () => {
-    const url = `/get_options?dest_lat=${destination.latitude}&dest_lng=${destination.longitude}&dest_name="${destinationName}"&source_lat=${clientLocation.latitude}&source_lng=${clientLocation.longitude}&source_name="${clientLocationName}"`;
+    const url = `/get_options?dest_lat=${destination.latitude}&dest_lng=${destination.longitude}&dest_name=${destinationName}&source_lat=${clientLocation.latitude}&source_lng=${clientLocation.longitude}&source_name=${clientLocationName}`;
     fetch(url, {
       method: 'GET',
       headers: {
