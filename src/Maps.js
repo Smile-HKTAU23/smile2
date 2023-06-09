@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './Maps.css'
 import { DirectionsRenderer, Marker, GoogleMap, DirectionsService } from '@react-google-maps/api';
+import { useNavigate } from 'react-router-dom';
 
 const CardSwiper = ({ cards, locations, pos }) => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [currentMap, setCurrentMap] = useState(0);
     const [directions, setDirections] = useState(null);
     const [a, seta] = useState(0);
+
+    const navigate = useNavigate();
     
     
 const containerStyle = {
@@ -95,6 +98,8 @@ const containerStyle = {
   
   
     const nextPage = () => {
+        let selected_card = locations[currentCardIndex];
+        navigate('/watch', { state: {"card": selected_card}  });
       return
     }
   

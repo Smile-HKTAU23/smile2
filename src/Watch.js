@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,  useRef } from 'react';
 import './Maps.css'
 import { DirectionsRenderer, Marker, GoogleMap, DirectionsService } from '@react-google-maps/api';
+import io from 'socket.io-client';
+import { useLocation } from 'react-router-dom';
 
+const Watch = () => {
 
-
-const Watch = ({ location, pos, pos2 }) => {
     const [directions, setDirections] = useState(null);
-    let currentMap = null;
 
-    const card = location
-    console.log(card, pos)
-const containerStyle = {
-    width: '100%',
-    height: '51rem'
-  };
+    const parameters_location = useLocation();
+    const card = parameters_location.state.card
+    let pos = { lat: 32.069235, lng: 34.825947 };
+    let pos2 = { lat: 32.069235, lng: 34.825947 };
+    let driverPosition = {lat: 32.110820, lng:34.806710}
+    
+    let currentMap = null;
+    const containerStyle = {
+      width: '100%',
+      height: '51rem'
+    };
 
   const setDriversPosition = (newPos) => {
     driverPosition = newPos;
@@ -26,8 +31,6 @@ const containerStyle = {
   const setPos2 = (newPos) => {
     pos2 = newPos;
   }
-  
-  let driverPosition = {lat: 32.110820, lng:34.806710}
 
   const options = {
     disableDefaultUI: true
@@ -42,7 +45,6 @@ const containerStyle = {
   };
   
   const getCurrentMarkers = () => {
-    console.log("marker")
     const markerData = [
       pos,
       driverPosition,
@@ -91,6 +93,33 @@ const containerStyle = {
   }
   setCurrentMap(renderMap(card));
 
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    // Establish the WebSocket connection
+    socketRef.current = io('http://localhost:5000');
+
+    // Send the "hello" message every minute
+    const interval = setInterval(() => {
+      socketRef.current.emit('message', {'hello':'1'});
+    }, 1000);
+
+    socketRef.current.on('response', (data) => {      
+        console.log(data.driver_location)
+        console.log(data.passenger_location)
+        setDriversPosition(data.driver_location)
+        setPos(data.passenger_location);
+        setPos2(data.passenger_destination);       
+        setCurrentMap(renderMap(card))              
+        
+      });
+
+    // Clean up the interval and close the WebSocket connection on component unmount
+    return () => {
+      clearInterval(interval);
+      socketRef.current.close();
+    };
+  }, []);
 
     return (
       <div className="card-swiper">
