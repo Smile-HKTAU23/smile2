@@ -26,7 +26,7 @@ const Watch = () => {
 
   const containerStyle = {
     width: '100%',
-    height: '51rem',
+    height: '52rem',
   };
 
   const options = {
