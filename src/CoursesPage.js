@@ -18,8 +18,10 @@ const CoursesPage = () => {
 
 
   return (
-    <div>
-      <h2>Results Page</h2>
+    <div className='cetered'>
+      <div>
+        <h2 className='centered'>Results Page</h2>
+      </div>
       <CardSwiper cards={cards} locations={options} pos={pos}/>
     </div>
   );
