@@ -13,6 +13,7 @@
 }
 
 .App-content {
+  margin-top: 40px;
   padding: 20px;
 }
 
@@ -21,12 +22,14 @@
   color: white;
   padding: 10px 20px;
   font-size: 16px;
+  margin-right: 20px;
   border: none;
   cursor: pointer;
 }
 
 .App-footer {
   background-color: grey;
+  margin-top: 200px;
   padding: 20px;
   color: white;
 }
