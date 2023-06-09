@@ -13,9 +13,9 @@ socketio = SocketIO(api, cors_allowed_origins="*")
 DEMO_MODE = True
 DEMO_COUNTER = 0
 DEMO_CHOSEN_COURSE_INDEX = 0
-DEMO_PASSENGER = {
-    'passenger': {'source': {'lat': 32.069235, 'lng': 34.825947, 'name': "Sholmzion Ramat Gan"},
-                  'destination': {'lat': 32.113169, 'lng': 34.804345, 'name': "Tel Aviv University"}}}
+DEMO_PASSENGER = {'passenger': {'source': {'lat': 32.069235, 'lon': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+                                'destination': {'lat': 32.1140370, 'lon': 34.805650,
+                                                'name': "ANU Museum of the Jewish People"}}}
 
 
 def demo_populate_passenger_locations():

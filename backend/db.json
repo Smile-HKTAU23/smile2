@@ -1,12 +1,13 @@
 {"courses":
         [
-            {"id": "111111",
-              "current_location": {"lat": 32.069235, "lon": 34.825947},
-            "source": {"lat": 32.069235, "lon": 34.825947, "name": "Shlomtsiyon 13-1 Ramat Gan"},
-            "destination": {"lat": 0, "lon": 0, "name": "Rokach Boulevard, Tel Aviv-Yafo"}},
-            {"id": "222222",
-              "current_location": {"lat": 32.069235, "lon": 34.825947},
-            "source": {"lat": 0, "lon": 0, "name": "Shlomtsiyon 13-1 Ramat Gan"},
-            "destination": {"lat": 0, "lon": 0, "name": "Tagore St 55 Tel Aviv"}}
+             {"id": "111111",
+        "source": {"lat": 32.070303, "lon": 34.824927, "name": "Haroe 186, Ramat Gan"},
+        "destination": {"lat": 32.100789, "lon": 34.797525, "name": "Rokach Boulevard, Tel Aviv-Yafo"}},
+        {"id": "222222",
+        "source": {"lat": 32.070263, "lon": 34.826165, "name": "Shlomtsiyon St 1 Ramat Gan"},
+        "destination": {"lat": 32.119228, "lon": 34.809734, "name": "Keren Kayemet Blvd Ramat Aviv"}},
+        {"id": "333333",
+         "source": {"lat": 32.061563, "lon": 34.831425, "name": "Arieh Ben Eliezer St 53 Ramat Gan"},
+         "destination": {"lat": 32.102217, "lon": 34.782093, "name": "Shai Agnon 1, Tel Aviv-Jaffa"}}
         ]
 }
