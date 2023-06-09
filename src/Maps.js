@@ -22,21 +22,14 @@ const containerStyle = {
   }
   
   // Define your origin and destination
-  const origin = { lat: 31.7749, lng: 31.4194 };
-  const destination = { lat: 31.0522, lng: 31.2437 };
-  const pickup1 = {lng: 34.82343,  lat: 32.06335}
-  const dropoff1 =  {lng: 34.82343, lat: 32.06345}
+  const dropoff1 = {lat: 32.069235, lng: 34.825947}
+  const pickup1 =  {lat: 32.1140370, lng: 34.805650}
 
   const handleDirectionsService = (directionsService) => {
-    if (directions == null)
-      {
-        console.log(directionsService)
         setDirections(directionsService)  
-      }            
   };
   
   const getCurrentMarkers = () => {
-    console.log("marker")
     const markerData = [
       pos,
       // Add more marker data as needed
@@ -57,13 +50,9 @@ const containerStyle = {
   
   }
   
-  const renderMap = (card) => {
-      
+  const renderMap = (card) => {    
     // Render the Google Maps component using the card's location information
     // Replace the following code with your own implementation using the Google Maps API
-    console.log("here")
-  
-    console.log(card)
     return (
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -88,17 +77,22 @@ const containerStyle = {
 
     const handleSwipeLeft = () => {
       setCurrentCardIndex((prevIndex) => (prevIndex === 0 ? cards.length - 1 : prevIndex - 1));
+      console.log(locations[currentCardIndex])
       setCurrentMap(renderMap(locations[currentCardIndex]));
     };
   
-    const handleSwipeRight = () => {
+    const handleSwipeRight = () => {        
       setCurrentCardIndex((prevIndex) => (prevIndex === cards.length - 1 ? 0 : prevIndex + 1));
+      console.log(locations[currentCardIndex])
       setCurrentMap(renderMap(locations[currentCardIndex]));
     };
   
   
     const nextPage = () => {
-        let selected_card = locations[currentCardIndex];
+        let card_index = (currentCardIndex == 0 ? cards.length - 1 : currentCardIndex - 1)
+        // let card_index = currentCardIndex
+        let selected_card = locations[card_index];
+        console.log(selected_card)
         navigate('/watch', { state: {"card": selected_card}  });
       return
     }

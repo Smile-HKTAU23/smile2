@@ -14,13 +14,15 @@ const Watch = () => {
   const [pos, setPos] = useState({ lat: 32.069235, lng: 34.825947 });
   const [pos2, setPos2] = useState({ lat: 32.069235, lng: 34.825947 });
   const [driverPosition, setDriverPosition] = useState({
-    lat: 32.110820,
+    lat: 32.110820, 
     lng: 34.806710,
   });
   const [currentMap, setCurrentMap] = useState(null);
 
   const parameters_location = useLocation();
   const card = parameters_location.state.card;
+
+  console.log(card)
 
   const containerStyle = {
     width: '100%',
@@ -32,13 +34,11 @@ const Watch = () => {
   };
 
   const handleDirectionsService = (directionsService) => {
-    if (directions == null) {
       setDirections(directionsService);
-    }
   };
 
   const getCurrentMarkers = () => {
-    const markerData = [pos, driverPosition, pos2];
+    const markerData = [driverPosition, pos2];
 
     const markers = markerData.map((marker, index) => (
       <Marker

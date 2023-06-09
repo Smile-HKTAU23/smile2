@@ -13,8 +13,8 @@ socketio = SocketIO(api, cors_allowed_origins="*")
 DEMO_MODE = True
 DEMO_COUNTER = 0
 DEMO_CHOSEN_COURSE_INDEX = 0
-DEMO_PASSENGER = {'passenger': {'source': {'lat': 32.069235, 'lng': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
-                                'destination': {'lat': 32.1140370, 'lng': 34.805650,
+DEMO_PASSENGER = {'passenger': {'destination': {'lat': 32.069235, 'lng': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+                                'source': {'lat': 32.1140370, 'lng': 34.805650,
                                                 'name': "ANU Museum of the Jewish People"}}}
 
 
@@ -44,9 +44,10 @@ def logic_get_options(details):
     result = dummy_finder(drivers_rout_dict, src_coor, dst_coor)
     return result
 
-
 @api.route('/get_options')
 def get_options():
+    global DEMO_COUNTER
+    DEMO_COUNTER = 0
     courses = db.get_courses()
 
     details = {"passenger": {"source": {"lat": float(request.args.get("source_lat")),

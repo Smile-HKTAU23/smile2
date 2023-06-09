@@ -20,7 +20,6 @@ const CoursesPage = () => {
   return (
     <div>
       <h2>Results Page</h2>
-      <p>Destination: </p>
       <CardSwiper cards={cards} locations={options} pos={pos}/>
     </div>
   );

@@ -7,7 +7,7 @@ import folium
 api = Flask(__name__)
 cors = CORS(api)
 api.config['CORS_HEADERS'] = 'Content-Type'
-RADIUS = 750 #meter
+RADIUS = 10000 #meter
 API_KEY = "AIzaSyCxLjTsE3neUN0Z34Sy9DQm0xCSvTjNspU"
 
 gmaps = googlemaps.Client(key=API_KEY)
