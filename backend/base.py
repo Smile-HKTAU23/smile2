@@ -33,8 +33,10 @@ def get_options():
     print(f'I: {details}')
     options = logic_get_options(details)
     print(f'O: {options}')
-
-    return options
+    pos = {'lat': float(request.args.get("source_lat")), 'lng': float(request.args.get("source_lng"))}
+    result = {'options': options, 'pos': pos}
+    print(result)
+    return result
 
 
 if __name__ == "__main__":

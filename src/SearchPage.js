@@ -19,7 +19,7 @@ const SearchPage = () => {
         const { latitude, longitude } = position.coords;
         setClientLocation({ latitude, longitude });
         fetchLocationName(latitude, longitude);
-        
+
       },
       (error) => {
         console.error('Error getting client location:', error);
@@ -68,7 +68,7 @@ const SearchPage = () => {
       </header>
       <div className="App-content">
         <h2>Enter your destination:</h2>
-        
+
         <AutocompleteAddressInput onChange={(location) => setDestinationName(location)} onSelect={(location) => setDestination(location)}  />
         <button className="search-button" onClick={handleSearch}>
           Search
