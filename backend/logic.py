@@ -3,11 +3,12 @@ from flask_cors import CORS, cross_origin
 from math import radians, sin, cos, sqrt, atan2
 import googlemaps
 import folium
+from route_breaker import optimal_station
 
 api = Flask(__name__)
 cors = CORS(api)
 api.config['CORS_HEADERS'] = 'Content-Type'
-RADIUS = 10000 #meter
+RADIUS = 750 #meter
 API_KEY = "AIzaSyCxLjTsE3neUN0Z34Sy9DQm0xCSvTjNspU"
 
 gmaps = googlemaps.Client(key=API_KEY)
@@ -108,19 +109,29 @@ def get_rides(drivers_route_dict,src_coor,dst_coor,radius=RADIUS):
     drivers_near_src,pickup_dict = get_drivers_near_coordinate(drivers_route_dict,src_coor,radius)
     matching_drivers,dropoff_dict = get_drivers_near_dst(drivers_route_dict,dst_coor,radius)
     maximum = min(3,len(matching_drivers))
-    return [{'id':matching_drivers[i][0],'pickup':{'lat':pickup_dict[matching_drivers[i][0]][0],'lng':pickup_dict[matching_drivers[i][0]][1]},'dropoff':{'lat':dropoff_dict[matching_drivers[i][0]][0],'lng':dropoff_dict[matching_drivers[i][0]][1]}} for i in range(maximum)]
+    return [{'id':matching_drivers[i][0],'pickup':{'lat':pickup_dict[matching_drivers[i][0]][0],'lon':pickup_dict[matching_drivers[i][0]][1]},'dropoff':{'lat':dropoff_dict[matching_drivers[i][0]][0],'lon':dropoff_dict[matching_drivers[i][0]][1]}} for i in range(maximum)]
     #return 0-3 best rides
 
 def api_get_options():
     result = get_options(request.body)
     return result
 
-def get_options(details):
-    #return 0-3 options for rides
-    #return object = {'id': '111111', 'pickup': {'lat': 0, 'lng': 0}, 'dropoff': {'lat': 0, 'lng': 0} }
-
-    return [{'id': '111111', 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat': 34.0461, 'lng': 34.8516} }, 
-            {'id': '222222', 'pickup': {'lat': 33.0461, 'lng': 34.8516}, 'dropoff': {'lat': 35.0461, 'lng': 34.8516} }]
+def get_options(details,radius=RADIUS):
+    src_coor, dst_coor, drivers_route_dict = parse_details(details)
+    optional_drivers = []
+    for i in range(3):
+        if i == 0:
+            optional_drivers = get_rides(drivers_route_dict,src_coor,dst_coor,radius)
+        elif i == 1:
+            station = optimal_station(details['passenger']['source']['name'],details['passenger']['source']['name'])
+            optional_drivers += get_rides(drivers_route_dict,src_coor,dst_coor,radius)
+        elif i == 2:
+            station = optimal_station(details['passenger']['source']['name'],details['passenger']['source']['name'],False)
+            optional_drivers += get_rides(drivers_route_dict, src_coor, dst_coor, radius)
+        if len(optional_drivers) >= 3:
+            return optional_drivers[:3]
+    maximum = min(3,len(optional_drivers))
+    return optional_drivers[:maximum]
 
 def dummy_get_near_dest(drivers_route_dict,coor):
     filtered_dict = {}
@@ -145,9 +156,9 @@ def dummy_finder(drivers_route_dict,src_coor,dst_coor,radius=RADIUS):
     matching_drivers = sorted(drivers_dropoff.items(), key=lambda item: get_distance(item[1], dst_coor))
     maximum = min(3, len(matching_drivers))
     return [{'id': matching_drivers[i][0],
-             'pickup': {'lat': pickup_dict[matching_drivers[i][0]][0], 'lng': pickup_dict[matching_drivers[i][0]][1]},
+             'pickup': {'lat': pickup_dict[matching_drivers[i][0]][0], 'lon': pickup_dict[matching_drivers[i][0]][1]},
              'dropoff': {'lat': matching_drivers[i][1][0],
-                         'lng': matching_drivers[i][1][1]}} for i in range(maximum)]
+                         'lon': matching_drivers[i][1][1]}} for i in range(maximum)]
 
 def test1(coordinates):
 
@@ -172,8 +183,8 @@ def test1(coordinates):
     m.save('map.html')
 
 def parse_details(details):
-    src_coor = unite_coor(details['passenger']['source']['lat'], details['passenger']['source']['lng'])
-    dst_coor = unite_coor(details['passenger']['destination']['lat'], details['passenger']['destination']['lng'])
+    src_coor = unite_coor(details['passenger']['source']['lat'], details['passenger']['source']['lon'])
+    dst_coor = unite_coor(details['passenger']['destination']['lat'], details['passenger']['destination']['lon'])
     drivers = {
         details['courses'][i]['id']: get_driver_route(
             details['courses'][i]['source']['name'],
@@ -186,26 +197,26 @@ def parse_details(details):
 def main():
     details = {
     'passenger':
-        {'source': {'lat': 32.069235, 'lng': 34.825947, 'name': "Sholmzion Ramat Gan"},
-        'destination': {'lat': 32.113169, 'lng': 34.804345, 'name': "Tel Aviv University"}},
+        {'source': {'lat': 32.069235, 'lon': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
+        'destination': {'lat': 32.1140370,'lon': 34.805650,'name': "ANU Museum of the Jewish People"}},
     'courses':
         [
             {'id': '111111',
-            'source': {'lat': 32.069235, 'lng': 34.825947, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
-            'destination': {'lat': 0, 'lng': 0, 'name': "Rokach Boulevard, Tel Aviv-Yafo"}},
+            'source': {'lat': 32.070303, 'lon': 34.824927, 'name': "Haroe 186, Ramat Gan"},
+            'destination': {'lat': 32.100789, 'lon': 34.797525, 'name': "Rokach Boulevard, Tel Aviv-Yafo"}},
             {'id': '222222',
-            'source': {'lat': 0, 'lng': 0, 'name': "Shlomtsiyon 13-1 Ramat Gan"},
-            'destination': {'lat': 0, 'lng': 0, 'name': "Tagore St 55 Tel Aviv"}},
-        ],
-        # 'points_of_interest': [{'lat': 0, 'lng': 0}, {'lat': 0, 'lng': 0}, {'lat': 0, 'lng': 0}]
-
+            'source': {'lat': 32.070263, 'lon': 34.826165, 'name': "Shlomtsiyon St 1 Ramat Gan"},
+            'destination': {'lat': 32.119228, 'lon': 34.809734, 'name': "Keren Kayemet Blvd Ramat Aviv"}},
+            {'id': '333333',
+             'source': {'lat': 32.061563, 'lon': 34.831425, 'name': "Arieh Ben Eliezer St 53 Ramat Gan"},
+             'destination': {'lat': 32.102217, 'lon': 34.782093, 'name': "Shai Agnon 1, Tel Aviv-Jaffa"}}
+        ]
     }
     src_coor,dst_coor,drivers_rout_dict = parse_details(details)
     #-------
 
     result = dummy_finder(drivers_rout_dict,src_coor,dst_coor)# get_options(details)
     print(result)
-    
 
 
 if __name__ == "__main__":
