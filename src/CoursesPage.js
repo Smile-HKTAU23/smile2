@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import CardSwiper from './Maps.js';
-import MapComponent from './MapComponent'
 
 const CoursesPage = () => {
   const location = useLocation();

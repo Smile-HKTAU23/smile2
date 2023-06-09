@@ -11,7 +11,7 @@ const CardSwiper = ({ cards, locations, pos }) => {
     
 const containerStyle = {
     width: '100%',
-    height: '400px'
+    height: '650px'
   };
   
   const options = {
@@ -65,7 +65,7 @@ const containerStyle = {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={card.pickup}
-          zoom={8}
+          zoom={12}
           options={options}
         >
           
@@ -94,6 +94,11 @@ const containerStyle = {
     };
   
   
+    const nextPage = () => {
+      return
+    }
+  
+  
     useEffect(() => {
         if (currentMap == 0 ) {
 
@@ -108,7 +113,9 @@ const containerStyle = {
 },[a]);
 
 
+
     return (
+      <div>
       <div className="card-swiper">
         <button className="swipe-button left" onClick={handleSwipeLeft}>
           &lt;
@@ -117,6 +124,13 @@ const containerStyle = {
         <button className="swipe-button right" onClick={handleSwipeRight}>
           &gt;
         </button>
+        
+      </div>
+      <div className='down-button-div'>
+        <button className="next-page down" onClick={nextPage}>
+          choose
+        </button>
+      </div>
       </div>
     );
   };
