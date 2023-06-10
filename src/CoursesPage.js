@@ -4,7 +4,6 @@ import CardSwiper from './Maps.js';
 
 const CoursesPage = () => {
   const location = useLocation();
-  console.log(location.state)
   const options = location.state.options;
   const pos = location.state.pos;
   let cards = options.map((loc) => {

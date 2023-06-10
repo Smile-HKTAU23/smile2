@@ -51,8 +51,7 @@ const containerStyle = {
   }
   
   const renderMap = (card) => {    
-    // Render the Google Maps component using the card's location information
-    // Replace the following code with your own implementation using the Google Maps API
+    console.log(card, 44)
     return (
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -76,27 +75,28 @@ const containerStyle = {
   
 
     const handleSwipeLeft = () => {
-      setCurrentCardIndex((prevIndex) => (prevIndex === 0 ? cards.length - 1 : prevIndex - 1));
-      console.log(locations[currentCardIndex])
-      setCurrentMap(renderMap(locations[currentCardIndex]));
-    };
+      setCurrentCardIndex((prevIndex) => {
+        const newIndex = (prevIndex === 0 ? cards.length - 1 : prevIndex - 1);
+        console.log(locations[newIndex], newIndex)
+        setCurrentMap(renderMap(locations[newIndex]));
+        return newIndex;
+      })}
   
     const handleSwipeRight = () => {        
-      setCurrentCardIndex((prevIndex) => (prevIndex === cards.length - 1 ? 0 : prevIndex + 1));
-      console.log(locations[currentCardIndex])
-      setCurrentMap(renderMap(locations[currentCardIndex]));
-    };
-  
+      setCurrentCardIndex((prevIndex) => {
+        const newIndex = (prevIndex === cards.length - 1 ? 0 : prevIndex + 1);        
+        return newIndex;
+      })}
   
     const nextPage = () => {
-        let card_index = (currentCardIndex == 0 ? cards.length - 1 : currentCardIndex - 1)
-        // let card_index = currentCardIndex
-        let selected_card = locations[card_index];
-        console.log(selected_card)
+        let selected_card = locations[currentCardIndex];
         navigate('/watch', { state: {"card": selected_card}  });
-      return
     }
-  
+    
+    useEffect(() => {
+      console.log(locations[currentCardIndex], currentCardIndex)
+      setCurrentMap(renderMap(locations[currentCardIndex]));
+    }, [currentCardIndex]);
   
     useEffect(() => {
         if (currentMap == 0 ) {
